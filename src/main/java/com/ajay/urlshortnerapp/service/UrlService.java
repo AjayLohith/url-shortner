@@ -1,20 +1,11 @@
 package com.ajay.urlshortnerapp.service;
 
-import com.ajay.urlshortnerapp.dto.UrlRequestDto;
 import com.ajay.urlshortnerapp.model.Url;
 import com.ajay.urlshortnerapp.repository.UrlRepository;
-import com.ajay.urlshortnerapp.util.Base62;
 import com.ajay.urlshortnerapp.util.ShortCodeGenerator;
-import com.fasterxml.jackson.annotation.OptBoolean;
-import jdk.jfr.consumer.RecordedStackTrace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UrlService {

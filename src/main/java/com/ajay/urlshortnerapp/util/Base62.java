@@ -1,6 +1,5 @@
 package com.ajay.urlshortnerapp.util;
 
-import org.springframework.stereotype.Component;
 
 public class Base62 {
 
