@@ -1,10 +1,10 @@
 package com.ajay.urlshortnerapp.dto;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UrlRequestDto {
     private String url;
 }
