@@ -4,7 +4,6 @@ import com.ajay.urlshortnerapp.model.Url;
 import com.ajay.urlshortnerapp.repository.UrlRepository;
 import com.ajay.urlshortnerapp.util.ShortCodeGenerator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.weaving.LoadTimeWeaverAware;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class UrlService {
 
     private static final String CACHE_PREFIX = "shorturl:";
 
-    public ResponseEntity<String> shortenUrl(String originalUrl) {
+    public String shortenUrl(String originalUrl) {
 
         // 1️ Save URL (get ID)
         Url url = new Url();
@@ -39,7 +38,7 @@ public class UrlService {
         } catch (Exception e) {
             // Redis failure should NOT break app
         }
-        return ResponseEntity.ok(shortCode);
+        return shortCode;
     }
 
     public ResponseEntity<Void> getOriginalUrl(String code) {
@@ -58,20 +57,20 @@ public class UrlService {
 //            );
 
             if (cachedUrl != null) {
-                long total = System.nanoTime();
-                System.out.println(
-                        "🔥 REDIS HIT | Total latency = " + (total - start) / 1_000_000 + " ms"
-                );
+//                long total = System.nanoTime();
+//                System.out.println(
+//                        "🔥 REDIS HIT | Total latency = " + (total - start) / 1_000_000 + " ms"
+//                );
 
                 return ResponseEntity.status(302)
                         .header("Location", cachedUrl)
                         .build();
             }
 
-            System.out.println("🟡 REDIS MISS");
+//            System.out.println("🟡 REDIS MISS");
 
         } catch (Exception e) {
-            System.out.println("⚠️ REDIS ERROR | fallback to DB");
+//            System.out.println("⚠️ REDIS ERROR | fallback to DB");
         }
 
         // 2️ DB fallback

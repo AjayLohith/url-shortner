@@ -13,8 +13,7 @@ public class UrlController {
 
     @PostMapping("/shorten")
     public ResponseEntity<String> shorten(@RequestBody UrlRequestDto request) {
-        return service.shortenUrl(request.getUrl());
-
+        return ResponseEntity.ok(service.shortenUrl(request.getUrl()));
     }
 
     @GetMapping("/{code}")

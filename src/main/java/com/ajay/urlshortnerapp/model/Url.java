@@ -3,6 +3,9 @@ package com.ajay.urlshortnerapp.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "urls")
@@ -19,5 +22,9 @@ public class Url {
 
     @Column(unique = true)
     private String shortUrl;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 }
 
