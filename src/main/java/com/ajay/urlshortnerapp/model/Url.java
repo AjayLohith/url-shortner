@@ -17,10 +17,10 @@ public class Url {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String originalUrl;
 
-    @Column(unique = true)
+    @Column(columnDefinition = "TEXT", unique = true, nullable = false)
     private String shortUrl;
 
     @CreationTimestamp

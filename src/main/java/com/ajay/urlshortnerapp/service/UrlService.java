@@ -19,6 +19,8 @@ public class UrlService {
 
     private static final String CACHE_PREFIX = "shorturl:";
 
+
+    //why didnt we used @Transactional
     public String shortenUrl(String originalUrl) {
 
         // 1️ Save URL (get ID)
