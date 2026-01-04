@@ -3,11 +3,8 @@ package com.ajay.urlshortnerapp.controller;
 import com.ajay.urlshortnerapp.dto.UrlRequestDto;
 import com.ajay.urlshortnerapp.service.UrlService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.net.URI;
-
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
