@@ -1,17 +1,23 @@
 package com.ajay.urlshortnerapp.util;
 
+import java.security.SecureRandom;
+
 public final class ShortCodeGenerator {
 
-    // prevents very short URLs
-    private static final long BASE_OFFSET = 10_000_000L;
+    private static final String BASE62 =
+            "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    // obfuscation salt (can be env-specific)
-    private static final long SALT = 0x5DEECE66DL;
+    private static final SecureRandom RANDOM = new SecureRandom();
+    private static final int LENGTH = 7; // 62^7 ≈ 3.5 trillion
 
     private ShortCodeGenerator() {}
 
-    public static String generate(long id) {
-        long obfuscated = (id + BASE_OFFSET) ^ SALT;
-        return Base62.encode(obfuscated);
+    public static String generateRandom() {
+        StringBuilder sb = new StringBuilder(LENGTH);
+        for (int i = 0; i < LENGTH; i++) {
+            sb.append(BASE62.charAt(RANDOM.nextInt(BASE62.length())));
+        }
+        return sb.toString();
     }
 }
+

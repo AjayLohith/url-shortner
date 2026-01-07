@@ -21,17 +21,21 @@ public class UrlService {
 
 
     //why didnt we used @Transactional
+
     public String shortenUrl(String originalUrl) {
 
         // 1️ Save URL (get ID)
         Url url = new Url();
+        String shortCode = ShortCodeGenerator.generateRandom();
         url.setOriginalUrl(originalUrl);
+        url.setShortUrl(shortCode);
+
         url = repository.save(url);
 
         // 2️ Generate short code
-        String shortCode = ShortCodeGenerator.generate(url.getId());
-        url.setShortUrl(shortCode);
-        repository.save(url);
+//        String shortCode = ShortCodeGenerator.generate(url.getId());
+//        url.setShortUrl(shortCode);
+//        repository.save(url);
 
         // 3️ Cache (best-effort)
         try {
@@ -50,45 +54,45 @@ public class UrlService {
 
         // 1️ Try Redis
         try {
-//            long redisStart = System.nanoTime();
+            long redisStart = System.nanoTime();
             String cachedUrl = redisTemplate.opsForValue().get(cacheKey);
-//            long redisEnd = System.nanoTime();
+            long redisEnd = System.nanoTime();
 
-//            System.out.println(
-//                    "REDIS lookup took " + (redisEnd - redisStart) / 1_000_000 + " ms"
-//            );
+            System.out.println(
+                    "REDIS lookup took " + (redisEnd - redisStart) / 1_000_000 + " ms"
+            );
 
             if (cachedUrl != null) {
-//                long total = System.nanoTime();
-//                System.out.println(
-//                        "🔥 REDIS HIT | Total latency = " + (total - start) / 1_000_000 + " ms"
-//                );
+                long total = System.nanoTime();
+                System.out.println(
+                        "🔥 REDIS HIT | Total latency = " + (total - start) / 1_000_000 + " ms"
+                );
 
                 return ResponseEntity.status(302)
                         .header("Location", cachedUrl)
                         .build();
             }
 
-//            System.out.println("🟡 REDIS MISS");
+            System.out.println("🟡 REDIS MISS");
 
         } catch (Exception e) {
-//            System.out.println("⚠️ REDIS ERROR | fallback to DB");
+            System.out.println("⚠️ REDIS ERROR | fallback to DB");
         }
 
         // 2️ DB fallback
-//        long dbStart = System.nanoTime();
+        long dbStart = System.nanoTime();
         Url url = repository.findByShortUrl(code)
                 .orElseThrow(() -> new RuntimeException("Short URL not found"));
-//        long dbEnd = System.nanoTime();
+        long dbEnd = System.nanoTime();
 
-//        System.out.println(
-//                "DB lookup took " + (dbEnd - dbStart) / 1_000_000 + " ms"
-//        );
+        System.out.println(
+                "DB lookup took " + (dbEnd - dbStart) / 1_000_000 + " ms"
+        );
 //
-//        long total = System.nanoTime();
-//        System.out.println(
-//                " TOTAL latency = " + (total - start) / 1_000_000 + " ms"
-//        );
+        long total = System.nanoTime();
+        System.out.println(
+                " TOTAL latency = " + (total - start) / 1_000_000 + " ms"
+        );
 
         return ResponseEntity.status(302)
                 .header("Location", url.getOriginalUrl())
