@@ -81,12 +81,22 @@ export default function UrlForm({ onResult }) {
                     <Button
                         type="button"
                         variant="ghost"
-                        className="w-fit flex items-center gap-2"
-                        onClick={() => setUseCustomSlug(!useCustomSlug)}
+                        role="switch"
+                        aria-checked={useCustomSlug}
+                        className={`w-fit flex items-center gap-2 transition-colors
+        ${
+                            useCustomSlug
+                                ? "bg-black text-white hover:bg-black/90 hover:text-white"
+                                : "bg-transparent text-foreground hover:bg-muted hover:text-foreground"
+                        }
+    `}
+                        onClick={() => setUseCustomSlug((prev) => !prev)}
                     >
-                        <Wand2 className="size-4" />
-                        {useCustomSlug ? "Enabled custom alias" : "Use custom alias"}
+                        <Wand2 className="size-5" />
+                        {useCustomSlug ? "Custom Slug enabled" : "Use custom alias"}
                     </Button>
+
+
 
                     {useCustomSlug && (
                         <Input
