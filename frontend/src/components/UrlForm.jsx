@@ -2,62 +2,119 @@ import { useState } from "react";
 import { shortenUrl } from "@/api/urlApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link2 } from "lucide-react";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Link2, Wand2 } from "lucide-react";
+
+const SLUG_REGEX = /^[a-zA-Z0-9-_]{3,30}$/;
 
 export default function UrlForm({ onResult }) {
-  const [url, setUrl] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+    const [url, setUrl] = useState("");
+    const [customSlug, setCustomSlug] = useState("");
+    const [useCustomSlug, setUseCustomSlug] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    try {
-      const code = await shortenUrl(url);
-      onResult(code);
-      setUrl("");
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const isSlugValid =
+        !useCustomSlug || SLUG_REGEX.test(customSlug.trim());
 
-  return (
-    <Card className="bg-white border shadow-md">
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <Link2 className="size-5 text-primary" />
-          <CardTitle className="text-2xl">Shorten your URL</CardTitle>
-        </div>
-        <CardDescription>
-          Paste a long URL and generate a short one
-        </CardDescription>
-      </CardHeader>
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
 
-      <CardContent>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <Input
-            type="url"
-            placeholder="https://example.com/very-long-url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            required
-            disabled={loading}
-          />
+        if (!isSlugValid) {
+            setError("Alias must be 3–30 characters (a–z, 0–9, - or _)");
+            return;
+        }
 
-          {error && (
-            <p className="text-sm text-destructive font-medium">{error}</p>
-          )}
+        setLoading(true);
 
-          <Button type="submit" size="lg" disabled={loading}>
-            {loading ? "Shortening..." : "Shorten URL"}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
-  );
+        try {
+            const shortUrl = await shortenUrl(
+                url,
+                useCustomSlug ? customSlug.trim() : null
+            );
+
+            onResult({
+                shortUrl,
+                originalUrl: url,
+            });
+
+            setUrl("");
+            setCustomSlug("");
+            setUseCustomSlug(false);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <Card className="bg-white border shadow-md">
+            <CardHeader>
+                <div className="flex items-center gap-2">
+                    <Link2 className="size-5 text-primary" />
+                    <CardTitle className="text-2xl">Shorten your URL</CardTitle>
+                </div>
+                <CardDescription>
+                    Paste a long URL and generate a short one
+                </CardDescription>
+            </CardHeader>
+
+            <CardContent>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <Input
+                        type="url"
+                        placeholder="https://example.com"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        required
+                        disabled={loading}
+                    />
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        className="w-fit flex items-center gap-2"
+                        onClick={() => setUseCustomSlug(!useCustomSlug)}
+                    >
+                        <Wand2 className="size-4" />
+                        {useCustomSlug ? "Enabled custom alias" : "Use custom alias"}
+                    </Button>
+
+                    {useCustomSlug && (
+                        <Input
+                            placeholder="my-custom-alias"
+                            value={customSlug}
+                            onChange={(e) => setCustomSlug(e.target.value)}
+                            disabled={loading}
+                        />
+                    )}
+
+
+                    <Button type="submit" size="lg" disabled={loading}>
+                        {loading ? "Shortening..." : "Shorten URL"}
+                    </Button>
+
+                    {error && (
+                        <p className="text-sm text-destructive font-medium">
+                            {error}
+                        </p>
+                    )}
+
+                    {/*<div className="border-t pt-3" />*/}
+
+
+
+
+                </form>
+            </CardContent>
+        </Card>
+    );
 }
