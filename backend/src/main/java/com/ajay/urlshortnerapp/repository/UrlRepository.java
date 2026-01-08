@@ -12,5 +12,5 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
     Optional<Url> findByShortUrl(String shortCode);
 
     // Optional: Useful to check if a code already exists
-    boolean existsByShortUrl(String shortCode);
+    boolean existsByShortUrl(String shortUrl);
 }

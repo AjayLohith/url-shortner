@@ -2,18 +2,25 @@ package com.ajay.urlshortnerapp.controller;
 
 import com.ajay.urlshortnerapp.dto.UrlRequestDto;
 import com.ajay.urlshortnerapp.service.UrlService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping
 @RequiredArgsConstructor
 public class UrlController {
     private final UrlService service;
 
     @PostMapping("/shorten")
-    public ResponseEntity<String> shorten(@RequestBody UrlRequestDto request) {
-        return ResponseEntity.ok(service.shortenUrl(request.getUrl()));
+    public ResponseEntity<String> shorten(@Valid @RequestBody UrlRequestDto request) {
+
+        String code = service.shorten(
+                request.getUrl(),
+                request.getCustomSlug()
+        );
+
+        return ResponseEntity.ok("http://localhost:8080/" + code);
     }
 
     @GetMapping("/{code}")

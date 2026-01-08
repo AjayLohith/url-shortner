@@ -1,10 +1,22 @@
 package com.ajay.urlshortnerapp.dto;
 
-import lombok.*;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class UrlRequestDto {
+
+    @NotBlank(message = "URL is required")
+    @Pattern(
+            regexp = "^(http|https)://.*$",
+            message = "URL must start with http:// or https://"
+    )
     private String url;
+
+    @Pattern(
+            regexp = "^[a-zA-Z0-9_-]{3,20}$",
+            message = "Custom slug must be 3–20 characters (letters, numbers, - or _)"
+    )
+    private String customSlug;
 }
