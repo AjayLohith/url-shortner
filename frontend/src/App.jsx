@@ -13,7 +13,7 @@ export default function App() {
                 <header className="text-center mb-8">
                     {/* Background box removed, just clean Inter Bold typography */}
                     <h1 className="text-6xl font-[900] tracking-tighter text-black uppercase">
-                        SNAP<span className="text-[#6366F1]">URL</span>
+                        SNAP<span className="text-[#6366F1]">LINK</span>
                     </h1>
                 </header>
 
