@@ -17,7 +17,7 @@ export default function App() {
                     </h1>
                 </header>
 
-                {/*<FreeTierNotice />*/}
+                <FreeTierNotice />
 
                 <UrlForm
                     onResult={(res) => { setResult(res); setLoading(false); }}

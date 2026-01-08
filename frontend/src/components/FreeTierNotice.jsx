@@ -11,7 +11,7 @@ export default function FreeTierNotice() {
                     Render Free Tier Notice:
                 </p>
                 <p className="font-bold text-[11px] mt-1 italic">
-                    The server sleeps when idle. First link might take 30s to load. Don't panic.
+                    The server sleeps when idle. First link might take 50s-1min to load bcoz hosted on free plan. Don't be mad.
                 </p>
             </div>
         </div>
