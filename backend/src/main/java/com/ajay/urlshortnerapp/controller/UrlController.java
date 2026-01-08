@@ -20,7 +20,7 @@ public class UrlController {
                 request.getCustomSlug()
         );
 
-        return ResponseEntity.ok("http://localhost:8080/" + code);
+        return ResponseEntity.ok("https://snaplinkk.vercel.app" + code);
     }
 
     @GetMapping("/{code}")
