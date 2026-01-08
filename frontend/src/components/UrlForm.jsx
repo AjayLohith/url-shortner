@@ -10,16 +10,32 @@ export default function UrlForm({ onResult, onSubmitStart }) {
     const [customSlug, setCustomSlug] = useState("");
     const [useCustomSlug, setUseCustomSlug] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(""); // UI Validation state
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(""); // Clear previous errors
+
+        // Client-side validation for minimum length
+        if (useCustomSlug && customSlug.trim().length < 3) {
+            setError("Alias must be at least 3 characters long!");
+            return;
+        }
+
         onSubmitStart();
         setLoading(true);
         try {
             const res = await shortenUrl(url, useCustomSlug ? customSlug : null);
             onResult({ shortUrl: res, originalUrl: url });
+            setUrl("");
+            setCustomSlug("");
         } catch (err) {
-            console.error(err);
+            // Server-side validation for existing alias
+            if (err.message?.toLowerCase().includes("alias") || err.message?.toLowerCase().includes("taken")) {
+                setError("Alias already used! Try another one.");
+            } else {
+                setError("Something went wrong. Try again.");
+            }
         } finally {
             setLoading(false);
         }
@@ -48,7 +64,10 @@ export default function UrlForm({ onResult, onSubmitStart }) {
 
                     <button
                         type="button"
-                        onClick={() => setUseCustomSlug(!useCustomSlug)}
+                        onClick={() => {
+                            setUseCustomSlug(!useCustomSlug);
+                            setError("");
+                        }}
                         className={`px-4 py-2 font-extrabold text-xs flex items-center gap-2 border-[2px] border-black rounded-full transition-all active:scale-95 ${
                             useCustomSlug ? "bg-black text-white" : "bg-[#EEF2FF] text-black hover:bg-indigo-100"
                         }`}
@@ -59,10 +78,20 @@ export default function UrlForm({ onResult, onSubmitStart }) {
                     {useCustomSlug && (
                         <Input
                             placeholder="my-custom-link"
-                            className="border-[3px] border-black rounded-xl h-12 font-bold animate-in slide-in-from-top-2"
+                            className={`border-[3px] border-black rounded-xl h-12 font-bold animate-in slide-in-from-top-2 ${error ? "border-red-500" : ""}`}
                             value={customSlug}
-                            onChange={(e) => setCustomSlug(e.target.value)}
+                            onChange={(e) => {
+                                setCustomSlug(e.target.value);
+                                if (error) setError("");
+                            }}
                         />
+                    )}
+
+                    {/* Validation Prompt Area */}
+                    {error && (
+                        <p className="text-red-500 font-[900] text-xs uppercase italic text-center animate-in zoom-in duration-200">
+                            ⚠️ {error}
+                        </p>
                     )}
 
                     <Button

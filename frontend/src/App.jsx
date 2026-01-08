@@ -24,13 +24,7 @@ export default function App() {
                     onSubmitStart={() => { setResult(null); setLoading(true); }}
                 />
 
-                {loading && !result && (
-                    <div className="text-center">
-                        <p className="font-extrabold uppercase tracking-[0.2em] text-indigo-500 animate-pulse text-xs">
-                            🚀 Waking up the server...
-                        </p>
-                    </div>
-                )}
+
             </div>
 
             {result && (
