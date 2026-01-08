@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/:code",
+      "destination": "https://snaplink-oyf6.onrender.com/:code"
+    }
+  ]
+}
