@@ -11,8 +11,8 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173")
-                .allowedOrigins("https://snaplink-nu.vercel.app/")
-                .allowedOrigins("https://snaplink-oyf6.onrender.com/")
+                .allowedOrigins("https://snaplink-nu.vercel.app")
+                .allowedOrigins("https://snaplink-oyf6.onrender.com")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
