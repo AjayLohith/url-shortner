@@ -11,16 +11,9 @@ export default function SuccessBanner({ shortUrl, originalUrl, onClose }) {
     // REMOVE http / https ONLY FOR DISPLAY
     const displayUrl = shortUrl.replace(/^https?:\/\//, "");
 
-    // SAFE FAVICON RESOLUTION
-    let faviconUrl = null;
-    try {
-        if (originalUrl) {
-            const domain = new URL(originalUrl).hostname;
-            faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
-        }
-    } catch (e) {
-        faviconUrl = null;
-    }
+    const faviconUrl = originalUrl
+        ? `https://www.google.com/s2/favicons?domain=${originalUrl}&sz=64`
+        : null;
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(shortUrl);
@@ -29,6 +22,7 @@ export default function SuccessBanner({ shortUrl, originalUrl, onClose }) {
     };
 
     return (
+        // DARK OVERLAY ONLY
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <Card className="relative w-full max-w-md border shadow-lg">
 
@@ -41,7 +35,6 @@ export default function SuccessBanner({ shortUrl, originalUrl, onClose }) {
                 </button>
 
                 <div className="p-6 space-y-5 bg-white">
-
                     {/* HEADER */}
                     <div className="flex items-center gap-3">
                         <div className="size-12 rounded-full bg-white flex items-center justify-center text-3xl">
@@ -63,10 +56,7 @@ export default function SuccessBanner({ shortUrl, originalUrl, onClose }) {
                                 src={faviconUrl}
                                 alt="favicon"
                                 className="size-5"
-                                referrerPolicy="no-referrer"
-                                onError={(e) => {
-                                    e.currentTarget.style.display = "none";
-                                }}
+                                onError={(e) => (e.currentTarget.style.display = "none")}
                             />
                         )}
 
@@ -94,13 +84,11 @@ export default function SuccessBanner({ shortUrl, originalUrl, onClose }) {
                         <Button onClick={handleCopy} className="flex-1">
                             {copied ? (
                                 <>
-                                    <Check className="size-4 mr-1" />
-                                    Copied
+                                    <Check className="size-4" /> Copied
                                 </>
                             ) : (
                                 <>
-                                    <Copy className="size-4 mr-1" />
-                                    Copy
+                                    <Copy className="size-4" /> Copy
                                 </>
                             )}
                         </Button>
