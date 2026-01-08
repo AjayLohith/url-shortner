@@ -1,3 +1,4 @@
+// FIXED FILE: UrlForm.jsx
 import { useState } from "react";
 import { shortenUrl } from "@/api/urlApi";
 import { Button } from "@/components/ui/button";
@@ -13,11 +14,10 @@ import { Link2, Wand2 } from "lucide-react";
 
 const SLUG_REGEX = /^[a-zA-Z0-9-_]{3,30}$/;
 
-export default function UrlForm({ onResult }) {
+export default function UrlForm({ onResult, onSubmitStart }) {
     const [url, setUrl] = useState("");
     const [customSlug, setCustomSlug] = useState("");
     const [useCustomSlug, setUseCustomSlug] = useState(false);
-
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -27,6 +27,7 @@ export default function UrlForm({ onResult }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        onSubmitStart(); // 🔥 THIS triggers engagement UI
 
         if (!isSlugValid) {
             setError("Alias must be 3–30 characters (a–z, 0–9, - or _)");
@@ -50,7 +51,7 @@ export default function UrlForm({ onResult }) {
             setCustomSlug("");
             setUseCustomSlug(false);
         } catch (err) {
-            setError(err.message);
+            setError(err.message || "Something went wrong");
         } finally {
             setLoading(false);
         }
@@ -78,25 +79,20 @@ export default function UrlForm({ onResult }) {
                         required
                         disabled={loading}
                     />
+
                     <Button
                         type="button"
                         variant="ghost"
-                        role="switch"
-                        aria-checked={useCustomSlug}
-                        className={`w-fit flex items-center gap-2 transition-colors
-        ${
+                        className={`w-fit flex items-center gap-2 ${
                             useCustomSlug
-                                ? "bg-black text-white hover:bg-black/90 hover:text-white"
-                                : "bg-transparent text-foreground hover:bg-muted hover:text-foreground"
-                        }
-    `}
+                                ? "bg-black text-white"
+                                : "hover:bg-muted"
+                        }`}
                         onClick={() => setUseCustomSlug((prev) => !prev)}
                     >
                         <Wand2 className="size-5" />
-                        {useCustomSlug ? "Custom Slug enabled" : "Use custom alias"}
+                        {useCustomSlug ? "Custom slug enabled" : "Use custom alias"}
                     </Button>
-
-
 
                     {useCustomSlug && (
                         <Input
@@ -107,7 +103,6 @@ export default function UrlForm({ onResult }) {
                         />
                     )}
 
-
                     <Button type="submit" size="lg" disabled={loading}>
                         {loading ? "Shortening..." : "Shorten URL"}
                     </Button>
@@ -117,12 +112,6 @@ export default function UrlForm({ onResult }) {
                             {error}
                         </p>
                     )}
-
-                    {/*<div className="border-t pt-3" />*/}
-
-
-
-
                 </form>
             </CardContent>
         </Card>

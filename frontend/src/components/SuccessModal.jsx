@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default function SuccessModal({ shortUrl, onClose }) {
     const [copied, setCopied] = useState(false);
 
-    if (!shortUrl) return null;ce
+    if (!shortUrl) return null;
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(shortUrl);

@@ -100,8 +100,14 @@ export default function SuccessBanner({ shortUrl, originalUrl, onClose }) {
                             Open
                         </Button>
                     </div>
+                    <p className="text-xs text-muted-foreground text-center mt-3">
+                        ⚡ Next links will be faster the server is now warmed up
+                    </p>
                 </div>
+
             </Card>
+
+
         </div>
     );
 }
