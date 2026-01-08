@@ -1,9 +1,19 @@
+import { AlertCircle } from "lucide-react";
+
 export default function FreeTierNotice() {
     return (
-        <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
-            ⚠️ <strong>Free tier notice:</strong> This app runs on Render’s free tier.
-            The <strong>first request may take 1–2 minutes</strong> while the server wakes up.
-            After that, it will be super fast ⚡
+        <div className="bg-white border-[4px] rounded-xl border-black p-4 flex items-start gap-4 shadow-[6px_6px_0px_0px_rgba(255,49,49,1)]">
+            <div className="bg-[#FF3131] border-[2px] border-black p-1">
+                <AlertCircle className="size-6 text-white stroke-[3px]" />
+            </div>
+            <div>
+                <p className="font-black uppercase text-xs leading-tight">
+                    Render Free Tier Notice:
+                </p>
+                <p className="font-bold text-[11px] mt-1 italic">
+                    The server sleeps when idle. First link might take 30s to load. Don't panic.
+                </p>
+            </div>
         </div>
     );
 }

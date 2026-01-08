@@ -1,58 +1,44 @@
 import { useState } from "react";
 import UrlForm from "@/components/UrlForm";
 import SuccessBanner from "@/components/SuccessBanner";
-import EngagementPanel from "@/components/EngagementPanel";
 import FreeTierNotice from "@/components/FreeTierNotice";
 
 export default function App() {
     const [result, setResult] = useState(null);
-    const [engaged, setEngaged] = useState(false);
-
-
-
     const [loading, setLoading] = useState(false);
-    // const [result, setResult] = useState(null);
-
-    const handleShorten = async (e) => {
-        e.preventDefault();
-        setLoading(true);   // 1. Shows the EngagementPanel
-        setResult(null);
-
-        // 2. FAKE A LONG DELAY (Testing only)
-        // Remove the setTimeout wrap when you go to production
-        setTimeout(async () => {
-            // Your real fetch code here
-            // const res = await fetch(...)
-            setResult("https://short.ly/xyz"); // 3. Hides EngagementPanel
-            setLoading(false);
-        }, 20000); // Forces you to wait 20 seconds to see the terminal logs & zaps
-    };
-
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-            <div className="w-full max-w-xl">
-                <FreeTierNotice />
+        <div className="min-h-screen bg-[#F0F2FF] flex items-center justify-center p-6 font-['Inter',sans-serif]">
+            <div className="w-full max-w-xl space-y-6">
+                <header className="text-center mb-8">
+                    {/* Background box removed, just clean Inter Bold typography */}
+                    <h1 className="text-6xl font-[900] tracking-tighter text-black uppercase">
+                        SNAP<span className="text-[#6366F1]">URL</span>
+                    </h1>
+                </header>
+
+                {/*<FreeTierNotice />*/}
 
                 <UrlForm
-                    onResult={setResult}
-                    onSubmitStart={() => setEngaged(true)}
+                    onResult={(res) => { setResult(res); setLoading(false); }}
+                    onSubmitStart={() => { setResult(null); setLoading(true); }}
                 />
 
-                <EngagementPanel
-                    active={engaged}
-                    hasResult={!!result}
-                />
+                {loading && !result && (
+                    <div className="text-center">
+                        <p className="font-extrabold uppercase tracking-[0.2em] text-indigo-500 animate-pulse text-xs">
+                            🚀 Waking up the server...
+                        </p>
+                    </div>
+                )}
             </div>
 
-            <SuccessBanner
-                shortUrl={result?.shortUrl}
-                originalUrl={result?.originalUrl}
-                onClose={() => {
-                    setResult(null);
-                    setEngaged(false);
-                }}
-            />
+            {result && (
+                <SuccessBanner
+                    shortUrl={result?.shortUrl}
+                    onClose={() => { setResult(null); setLoading(false); }}
+                />
+            )}
         </div>
     );
 }

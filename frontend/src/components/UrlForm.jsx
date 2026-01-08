@@ -1,117 +1,76 @@
-// FIXED FILE: UrlForm.jsx
 import { useState } from "react";
-import { shortenUrl } from "@/api/urlApi";
+import { Link2, Wand2, Sparkles } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Link2, Wand2 } from "lucide-react";
-
-const SLUG_REGEX = /^[a-zA-Z0-9-_]{3,30}$/;
+import { shortenUrl } from "@/api/urlApi";
 
 export default function UrlForm({ onResult, onSubmitStart }) {
     const [url, setUrl] = useState("");
     const [customSlug, setCustomSlug] = useState("");
     const [useCustomSlug, setUseCustomSlug] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-
-    const isSlugValid =
-        !useCustomSlug || SLUG_REGEX.test(customSlug.trim());
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
-        onSubmitStart(); // 🔥 THIS triggers engagement UI
-
-        if (!isSlugValid) {
-            setError("Alias must be 3–30 characters (a–z, 0–9, - or _)");
-            return;
-        }
-
+        onSubmitStart();
         setLoading(true);
-
         try {
-            const shortUrl = await shortenUrl(
-                url,
-                useCustomSlug ? customSlug.trim() : null
-            );
-
-            onResult({
-                shortUrl,
-                originalUrl: url,
-            });
-
-            setUrl("");
-            setCustomSlug("");
-            setUseCustomSlug(false);
+            const res = await shortenUrl(url, useCustomSlug ? customSlug : null);
+            onResult({ shortUrl: res, originalUrl: url });
         } catch (err) {
-            setError(err.message || "Something went wrong");
+            console.error(err);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <Card className="bg-white border shadow-md">
-            <CardHeader>
-                <div className="flex items-center gap-2">
-                    <Link2 className="size-5 text-primary" />
-                    <CardTitle className="text-2xl">Shorten your URL</CardTitle>
-                </div>
-                <CardDescription>
-                    Paste a long URL and generate a short one
-                </CardDescription>
+        <Card className="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-[24px] overflow-hidden">
+            <CardHeader className="border-b-[3px] border-black bg-white py-6">
+                <CardTitle className="flex items-center gap-3 font-[800] text-2xl text-black">
+                    <div className="bg-[#EEF2FF] p-2 rounded-xl border-2 border-black">
+                        <Link2 className="size-6 text-[#6366F1]" />
+                    </div>
+                    Shorten Link
+                </CardTitle>
             </CardHeader>
-
-            <CardContent>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <CardContent className="p-6 space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5">
                     <Input
                         type="url"
-                        placeholder="https://example.com"
+                        placeholder="Paste your long URL here..."
+                        className="border-[3px] border-black rounded-xl h-14 text-base font-bold placeholder:text-slate-400 focus-visible:ring-0 focus:bg-indigo-50/30 transition-colors"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                         required
-                        disabled={loading}
                     />
 
-                    <Button
+                    <button
                         type="button"
-                        variant="ghost"
-                        className={`w-fit flex items-center gap-2 ${
-                            useCustomSlug
-                                ? "bg-black text-white"
-                                : "hover:bg-muted"
+                        onClick={() => setUseCustomSlug(!useCustomSlug)}
+                        className={`px-4 py-2 font-extrabold text-xs flex items-center gap-2 border-[2px] border-black rounded-full transition-all active:scale-95 ${
+                            useCustomSlug ? "bg-black text-white" : "bg-[#EEF2FF] text-black hover:bg-indigo-100"
                         }`}
-                        onClick={() => setUseCustomSlug((prev) => !prev)}
                     >
-                        <Wand2 className="size-5" />
-                        {useCustomSlug ? "Custom slug enabled" : "Use custom alias"}
-                    </Button>
+                        <Wand2 className="size-3" /> CUSTOM ALIAS
+                    </button>
 
                     {useCustomSlug && (
                         <Input
-                            placeholder="my-custom-alias"
+                            placeholder="my-custom-link"
+                            className="border-[3px] border-black rounded-xl h-12 font-bold animate-in slide-in-from-top-2"
                             value={customSlug}
                             onChange={(e) => setCustomSlug(e.target.value)}
-                            disabled={loading}
                         />
                     )}
 
-                    <Button type="submit" size="lg" disabled={loading}>
-                        {loading ? "Shortening..." : "Shorten URL"}
+                    <Button
+                        className="w-full h-14 bg-[#6366F1] hover:bg-[#4F46E5] text-white border-[3px] border-black rounded-xl text-lg font-[800] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all"
+                        disabled={loading}
+                    >
+                        {loading ? "CRUNCHING..." : "GENERATE LINK"}
                     </Button>
-
-                    {error && (
-                        <p className="text-sm text-destructive font-medium">
-                            {error}
-                        </p>
-                    )}
                 </form>
             </CardContent>
         </Card>

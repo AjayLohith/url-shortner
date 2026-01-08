@@ -1,113 +1,87 @@
 import { useState } from "react";
-import { Copy, ExternalLink, X, Check } from "lucide-react";
+import { Copy, X, Check, ExternalLink } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export default function SuccessBanner({ shortUrl, originalUrl, onClose }) {
+export default function SuccessBanner({ shortUrl, onClose }) {
     const [copied, setCopied] = useState(false);
 
-    if (!shortUrl) return null;
-
-    // REMOVE http / https ONLY FOR DISPLAY
-    const displayUrl = shortUrl.replace(/^https?:\/\//, "");
-
-    const faviconUrl = originalUrl
-        ? `https://www.google.com/s2/favicons?domain=${originalUrl}&sz=64`
-        : null;
-
     const handleCopy = async () => {
-        await navigator.clipboard.writeText(shortUrl);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        try {
+            await navigator.clipboard.writeText(shortUrl);
+            setCopied(true);
+            // Reset "Copied" text after 2 seconds
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error("Failed to copy link", err);
+        }
     };
 
     return (
-        // DARK OVERLAY ONLY
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-            <Card className="relative w-full max-w-md border shadow-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-indigo-900/20 backdrop-blur-sm p-4 font-['Inter']">
+            {/* The Main Card - Now Static (No animation) */}
+            <Card className="relative w-full max-w-md bg-white border-[4px] border-black rounded-[32px] shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] p-8">
 
-                {/* CLOSE BUTTON */}
+                {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute right-4 top-4 text-muted-foreground hover:text-foreground"
+                    className="absolute right-6 top-6 hover:rotate-90 transition-transform duration-200"
                 >
-                    <X className="size-4" />
+                    <X className="size-6 text-black" />
                 </button>
 
-                <div className="p-6 space-y-5 bg-white">
-                    {/* HEADER */}
-                    <div className="flex items-center gap-3">
-                        <div className="size-12 rounded-full bg-white flex items-center justify-center text-3xl">
-                            🎉
-                        </div>
-
-                        <div>
-                            <h2 className="text-xl font-semibold">Here you go</h2>
-                            <p className="text-sm text-muted-foreground">
-                                Your shortened link is ready
-                            </p>
-                        </div>
+                <div className="text-center space-y-6">
+                    {/* Icon Header */}
+                    <div className="mx-auto size-20 bg-[#D1FAE5] border-[3px] border-black rounded-[24px] flex items-center justify-center text-4xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        🎉
                     </div>
 
-                    {/* LINK BOX */}
-                    <div className="flex items-center gap-3 p-3 rounded-md border">
-                        {faviconUrl && (
-                            <img
-                                src={faviconUrl}
-                                alt="favicon"
-                                className="size-5"
-                                onError={(e) => (e.currentTarget.style.display = "none")}
-                            />
-                        )}
+                    <div className="space-y-1">
+                        <h2 className="text-3xl font-[900] text-black tracking-tight">Here you go!!</h2>
+                        <h2 className="text-2xl font-[900] text-black opacity-80">Your link is live now</h2>
+                    </div>
 
+                    {/* Link Display Area */}
+                    <div className="bg-[#F8FAFC] border-[3px] border-black p-4 rounded-xl flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <span className="flex-1 font-bold text-black truncate text-left text-sm">
+                            {shortUrl}
+                        </span>
+
+                        {/* Functional Redirect Icon */}
                         <a
                             href={shortUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 break-all text-primary font-medium hover:underline"
+                            className="text-slate-400 hover:text-black transition-colors"
                         >
-                            {displayUrl}
-                        </a>
-
-                        <a
-                            href={shortUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-muted-foreground hover:text-foreground"
-                        >
-                            <ExternalLink className="size-4" />
+                            <ExternalLink className="size-5 stroke-[2.5px]" />
                         </a>
                     </div>
 
-                    {/* ACTION BUTTONS */}
-                    <div className="flex gap-2">
-                        <Button onClick={handleCopy} className="flex-1">
+                    <div className="pt-2">
+                        {/* ONLY THE BUTTON ANIMATES:
+                          active:translate-x-[4px] active:translate-y-[4px] -> Moves it "in"
+                          active:shadow-none -> Removes the shadow to look flat
+                        */}
+                        <Button
+                            onClick={handleCopy}
+                            className="w-full h-14 bg-[#6366F1] hover:bg-[#4F46E5] text-white border-[3px] border-black rounded-xl text-lg font-[800] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all transform active:translate-x-[4px] active:translate-y-[4px] active:shadow-none uppercase tracking-wider italic"
+                        >
                             {copied ? (
-                                <>
-                                    <Check className="size-4" /> Copied
-                                </>
+                                <span className="flex items-center gap-2">
+                                    <Check className="size-5" /> COPIED!
+                                </span>
                             ) : (
-                                <>
-                                    <Copy className="size-4" /> Copy
-                                </>
+                                "COPY LINK"
                             )}
                         </Button>
-
-                        <Button
-                            variant="outline"
-                            onClick={() => window.open(shortUrl, "_blank")}
-                        >
-                            Open
-                        </Button>
                     </div>
-                    <p className="text-xs text-muted-foreground text-center mt-3">
-                        ⚡ Next links will be faster the server is now warmed up
+
+                    <p className="text-[10px] font-black text-indigo-500/60 uppercase tracking-[0.2em] pt-2">
+                        ⚡ Next links will be instant
                     </p>
                 </div>
-
             </Card>
-
-
         </div>
     );
 }
