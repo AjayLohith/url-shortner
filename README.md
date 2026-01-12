@@ -12,7 +12,7 @@
   </p>
 
   <p align="left">
-    <img src="https://img.shields.io/github/license/AjayLohith/url-shortner?style=flat&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
+    <!-- <img src="https://img.shields.io/github/license/AjayLohith/url-shortner?style=flat&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license"> -->
     <img src="https://img.shields.io/github/last-commit/AjayLohith/url-shortner?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
     <img src="https://img.shields.io/github/languages/top/AjayLohith/url-shortner?style=flat&color=0080ff" alt="repo-top-language">
     <img src="https://img.shields.io/github/languages/count/AjayLohith/url-shortner?style=flat&color=0080ff" alt="repo-language-count">
@@ -148,5 +148,6 @@ cd backend
   Contributions are welcome! Feel free to fork the repository, create a feature branch,
   and submit a pull request.
 </p>
+
 
 
