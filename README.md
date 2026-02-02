@@ -26,6 +26,14 @@
     <img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=flat&logo=JavaScript&logoColor=black" alt="JavaScript">
     <img src="https://img.shields.io/badge/Docker-2496ED.svg?style=flat&logo=Docker&logoColor=white" alt="Docker">
     <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white" alt="java">
+    <img src="https://img.shields.io/badge/Supabase-3ECF8E.svg?style=flat&logo=supabase&logoColor=white" alt="Supabase">
+    <img src="https://img.shields.io/badge/PostgreSQL-4169E1.svg?style=flat&logo=postgresql&logoColor=white" alt="PostgreSQL">
+    <img src="https://img.shields.io/badge/Vercel-000000.svg?style=flat&logo=vercel&logoColor=white" alt="Vercel">
+    <img src="https://img.shields.io/badge/Render-46E3B7.svg?style=flat&logo=render&logoColor=black" alt="Render">
+    <img src="https://img.shields.io/badge/CSS3-1572B6.svg?style=flat&logo=css3&logoColor=white" alt="CSS3">
+    <img src="https://img.shields.io/badge/Vite-646CFF.svg?style=flat&logo=vite&logoColor=white" alt="Vite">
+    <img src="https://img.shields.io/badge/Redis-DC382D.svg?style=flat&logo=redis&logoColor=white" alt="Redis">
+
   </p>
 </div>
 
@@ -148,6 +156,7 @@ cd backend
   Contributions are welcome! Feel free to fork the repository, create a feature branch,
   and submit a pull request.
 </p>
+
 
 
 
