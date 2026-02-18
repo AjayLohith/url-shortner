@@ -1,6 +1,5 @@
 package com.ajay.urlshortnerapp.rateLimit;
 
-import com.ajay.urlshortnerapp.rateLimit.RateLimitService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +40,6 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
             if (!allowed) {
                 response.setStatus(429);
-//                System.out.println("Too Many Requests");
                 response.getWriter().write("Too Many Requests");
                 return;
             }

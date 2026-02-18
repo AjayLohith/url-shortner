@@ -8,7 +8,7 @@ public final class ShortCodeGenerator {
             "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private static final SecureRandom RANDOM = new SecureRandom();
-    private static final int LENGTH = 7; // 62^7 ≈ 3.5 trillion
+    private static final int LENGTH = 7; // 62^7 ~ 3.5 trillion
 
     private ShortCodeGenerator() {}
 

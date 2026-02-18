@@ -13,7 +13,8 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:5173",
                         "https://snaplink-nu.vercel.app",
-                        "https://snaplinkk.vercel.app/"
+                        "https://snaplinkk.vercel.app/",
+                        "http://localhost:8080"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
