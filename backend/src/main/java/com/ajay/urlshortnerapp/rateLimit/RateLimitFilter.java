@@ -24,6 +24,16 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private int windowSeconds;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.equals("/health")
+                || path.startsWith("/health/")
+                || path.equals("/api/health")
+                || path.startsWith("/api/health/")
+                || path.equals("/favicon.ico");
+    }
+
+    @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,

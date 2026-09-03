@@ -125,6 +125,13 @@ docker run -p 8080:8080 url-shortner
   <li>Access the frontend at <code>http://localhost:5173</code></li>
   <li>Backend API runs at <code>http://localhost:8080</code></li>
   <li>Create short URLs and track analytics via the dashboard or REST APIs</li>
+  <li><strong>Health Endpoints:</strong>
+    <ul>
+      <li><code>GET /health</code> or <code>GET /api/health</code> – Detailed JSON health status (Database + Redis).</li>
+      <li><code>GET /health/live</code> – Ultra-lightweight keep-alive liveness probe for UptimeRobot (0 DB overhead).</li>
+      <li><code>GET /health/ready</code> – Backing services readiness check.</li>
+    </ul>
+  </li>
 </ul>
 
 <hr>
