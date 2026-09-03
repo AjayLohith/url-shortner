@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link2, Wand2, Sparkles } from "lucide-react";
+import { Link2, Wand2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,7 +89,7 @@ export default function UrlForm({ onResult, onSubmitStart }) {
 
                     {/* Validation Prompt Area */}
                     {error && (
-                        <p className="text-red-500 font-[900] text-xs uppercase italic text-center animate-in zoom-in duration-200">
+                        <p className="text-red-500 font-[900] text-xs uppercase text-center animate-in zoom-in duration-200">
                             ⚠️ {error}
                         </p>
                     )}
